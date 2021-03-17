@@ -1,0 +1,924 @@
+mysql -u root -p
+
+CREATE DATABASE company;
+use company
+CREATE TABLE Employee
+    -> (Empid int,
+    -> Empname varchar(255),
+    -> Adderss varchar(255),
+    -> Doj date,
+    -> Salary int,
+    -> PRIMARY KEY(Empid));
+CREATE TABLE Project (Projectno int, Duration varchar(255), Projectname varchar(255), PRIMARY KEY(Projectno));
+CREATE TABLE Workson(Empid int,Projectno int,FOREIGN KEY(Empid) REFERENCES Employee(Empid),FOREIGN KEY(Projectno) REFERENCES Project(Projectno));
+INSERT INTO Employee VALUES(1,'Vidhya','334-C','2019-01-18',90000);
+INSERT INTO Employee VALUES(2,'Bharathi','300-C','2019-01-20',80000);
+INSERT INTO Employee VALUES(3,'Bala','303-A','2019-01-30',70000);
+INSERT INTO Employee VALUES(4,'Keerthi','303-D','2019-01-10',60000);
+INSERT INTO Project VALUES(1,'2 months','Android');
+INSERT INTO Project VALUES(2,'3 months','Arduino');
+INSERT INTO Workson VALUES(1,2);
+INSERT INTO Workson VALUES(2,2);
+INSERT INTO Workson VALUES(3,1);
+INSERT INTO Workson VALUES(4,1);
+
+SELECT * FROM Workson;
++-------+-----------+
+| Empid | Projectno |
++-------+-----------+
+|     1 |         2 |
+|     2 |         2 |
+|     3 |         1 |
+|     4 |         1 |
++-------+-----------+
+
+SELECT Empid FROM Workson WHERE Projectno=2;
++-------+
+| Empid |
++-------+
+|     1 |
+|     2 |
++-------+
+
+SELECT * FROM Project WHERE Projectno=2;
++-----------+----------+-------------+
+| Projectno | Duration | Projectname |
++-----------+----------+-------------+
+|         2 | 3 months | Arduino     |
++-----------+----------+-------------+
+
+SELECT * FROM Employee WHERE Empname LIKE 'B%';
++-------+----------+---------+------------+--------+
+| Empid | Empname  | Adderss | Doj        | Salary |
++-------+----------+---------+------------+--------+
+|     2 | Bharathi | 300-C   | 2019-01-20 |  80000 |
+|     3 | Bala     | 303-A   | 2019-01-30 |  70000 |
++-------+----------+---------+------------+--------+
+
+SELECT * FROM Employee ORDER BY Empname desc;
++-------+----------+---------+------------+--------+
+| Empid | Empname  | Adderss | Doj        | Salary |
++-------+----------+---------+------------+--------+
+|     1 | Vidhya   | 334-C   | 2019-01-18 |  90000 |
+|     4 | Keerthi  | 303-D   | 2019-01-10 |  60000 |
+|     2 | Bharathi | 300-C   | 2019-01-20 |  80000 |
+|     3 | Bala     | 303-A   | 2019-01-30 |  70000 |
++-------+----------+---------+------------+--------+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE DATABASE clg;
+use clg
+CREATE TABLE Student (Rollno int, Name varchar(255),m1 int,m2 int,m3 int,m4 int,m5 int,m6 int,total int, PRIMARY KEY(Rollno));
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(1,'Vidhya',90,90,90,90,90,90);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(2,'Bala',80,80,80,80,80,80);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(3,'Devi',70,70,70,70,70,70);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(4,'Ramana',60,60,60,60,60,60);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(5,'Sangee',50,50,50,50,50,50);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(6,'Keerthi',40,40,40,40,40,40);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(7,'Aravind',40,40,40,40,40,40);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(8,'Sakshi',30,30,30,30,30,30);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(9,'Siva',20,20,20,20,20,20);
+INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(10,'Jesu',10,10,10,10,10,10);
+PDATE Student SET total=m1+m2+m3+m4+m5+m6;
+
+CREATE TABLE Department (Deptid int,Deptname varchar(255),HOD varchar(255), PRIMARY KEY(Deptid));
+INSERT INTO Department VALUES(100,'CSE','Kala');
+INSERT INTO Department VALUES(200,'Civil','Kavitha');
+INSERT INTO Department VALUES(300,'Meta','Selvi');
+CREATE TABLE StudDep(Rollno int,Deptid int,FOREIGN KEY(Rollno) REFERENCES Student(Rollno),FOREIGN KEY(Deptid) REFERENCES Department(Deptid));
+
+SELECT * FROM StudDep;
+Empty set
+
+INSERT INTO StudDep VALUES(1,100);
+INSERT INTO StudDep VALUES(2,100);
+INSERT INTO StudDep VALUES(3,100);
+INSERT INTO StudDep VALUES(4,100);
+INSERT INTO StudDep VALUES(5,100);
+INSERT INTO StudDep VALUES(6,200);
+INSERT INTO StudDep VALUES(7,200);
+INSERT INTO StudDep VALUES(8,200);
+INSERT INTO StudDep VALUES(9,300);
+INSERT INTO StudDep VALUES(10,300);
+
+SELECT * FROM Department;
++--------+----------+---------+
+| Deptid | Deptname | HOD     |
++--------+----------+---------+
+|    100 | CSE      | Kala    |
+|    200 | Civil    | Kavitha |
+|    300 | Meta     | Selvi   |
++--------+----------+---------+
+
+
+SELECT * FROM StudDep;
++--------+--------+
+| Rollno | Deptid |
++--------+--------+
+|      1 |    100 |
+|      2 |    100 |
+|      3 |    100 |
+|      4 |    100 |
+|      5 |    100 |
+|      6 |    200 |
+|      7 |    200 |
+|      8 |    200 |
+|      9 |    300 |
+|     10 |    300 |
++--------+--------+
+
+ SELECT * FROM Student;
++--------+---------+------+------+------+------+------+------+-------+
+| Rollno | Name    | m1   | m2   | m3   | m4   | m5   | m6   | total |
++--------+---------+------+------+------+------+------+------+-------+
+|      1 | Vidhya  |   90 |   90 |   90 |   90 |   90 |   90 |   540 |
+|      2 | Bala    |   80 |   80 |   80 |   80 |   80 |   80 |   480 |
+|      3 | Devi    |   70 |   70 |   70 |   70 |   70 |   70 |   420 |
+|      4 | Ramana  |   60 |   60 |   60 |   60 |   60 |   60 |   360 |
+|      5 | Sangee  |   50 |   50 |   50 |   50 |   50 |   50 |   300 |
+|      6 | Keerthi |   40 |   40 |   40 |   40 |   40 |   40 |   240 |
+|      7 | Aravind |   40 |   40 |   40 |   40 |   40 |   40 |   240 |
+|      8 | Sakshi  |   30 |   30 |   30 |   30 |   30 |   30 |   180 |
+|      9 | Siva    |   20 |   20 |   20 |   20 |   20 |   20 |   120 |
+|     10 | Jesu    |   10 |   10 |   10 |   10 |   10 |   10 |    60 |
++--------+---------+------+------+------+------+------+------+-------+
+
+SELECt * FROM Student,StudDep WHERE Deptid=100 AND Student.Rollno=StudDep.Rollno; 
++--------+--------+------+------+------+------+------+------+-------+--------+--------+
+| Rollno | Name   | m1   | m2   | m3   | m4   | m5   | m6   | total | Rollno | Deptid |
++--------+--------+------+------+------+------+------+------+-------+--------+--------+
+|      1 | Vidhya |   90 |   90 |   90 |   90 |   90 |   90 |   540 |      1 |    100 |
+|      2 | Bala   |   80 |   80 |   80 |   80 |   80 |   80 |   480 |      2 |    100 |
+|      3 | Devi   |   70 |   70 |   70 |   70 |   70 |   70 |   420 |      3 |    100 |
+|      4 | Ramana |   60 |   60 |   60 |   60 |   60 |   60 |   360 |      4 |    100 |
+|      5 | Sangee |   50 |   50 |   50 |   50 |   50 |   50 |   300 |      5 |    100 |
++--------+--------+------+------+------+------+------+------+-------+--------+--------+
+
+SELECt * FROM Department,StudDep WHERE Rollno=5 AND Department.Deptid=StudDep.Deptid; 
++--------+----------+------+--------+--------+
+| Deptid | Deptname | HOD  | Rollno | Deptid |
++--------+----------+------+--------+--------+
+|    100 | CSE      | Kala |      5 |    100 |
++--------+----------+------+--------+--------+
+
+SELECt * FROM Student WHERE total>500; 
++--------+--------+------+------+------+------+------+------+-------+
+| Rollno | Name   | m1   | m2   | m3   | m4   | m5   | m6   | total |
++--------+--------+------+------+------+------+------+------+-------+
+|      1 | Vidhya |   90 |   90 |   90 |   90 |   90 |   90 |   540 |
++--------+--------+------+------+------+------+------+------+-------+
+
+SELECt Name FROM Student WHERE total>500; 
++--------+
+| Name   |
++--------+
+| Vidhya |
++--------+
+
+SELECT HOD FROM Department WHERE Deptname='CSE'; 
++------+
+| HOD  |
++------+
+| Kala |
++------+
+
+SELECT Student.Rollno FROM Student,StudDep WHERE Student.Rollno=StudDep.Rollno AND Deptid=(SELECT Deptid FROM Department WHERE Deptname='CSE'); 
++--------+
+| Rollno |
++--------+
+|      1 |
+|      2 |
+|      3 |
+|      4 |
+|      5 |
++--------+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE DATABASE travel;
+use travel
+CREATE TABLE salesperson(ssn int,name varchar(255),start_year int, dept_no int);
+ALTER TABLE salesperson ADD PRIMARY KEY(ssn);
+CREATE TABLE trip(ssn int,from_city varchar(255),to_city varchar(255),departure_date date,return_date date,trip_id int,PRIMARY KEY(trip_id),FOREIGN KEY(ssn) REFERENCES salesperson(ssn));
+CREATE TABLE salerep_expense(trip_id int,expense_type varchar(255),amount int, FOREIGN KEY(trip_id) REFERENCES trip(trip_id));
+INSERT INTO salesperson VALUES(1,'vidhya',2015,100);
+INSERT INTO salesperson VALUES(2,'amruth',2017,100);
+INSERT INTO salesperson VALUES(3,'bala',2012,200);
+INSERT INTO trip VALUES(1,'chennai','delhi','2015-01-11','2015-01-15',1000);
+INSERT INTO trip VALUES(2,'chennai','mumbai','2017-01-11','2017-01-15',2000);
+INSERT INTO salerep_expense VALUES(1000,'TRAVEL',5000);
+INSERT INTO salerep_expense VALUES(1000,'TRAVEL',1000);
+INSERT INTO salerep_expense VALUES(2000,'STAY',10000);
+
+SELECT * FROM trip, salerep_expense WHERE amount>2000 AND trip.trip_id=salerep_expense.trip_id; 
++------+-----------+---------+----------------+-------------+---------+---------+--------------+--------+
+| ssn  | from_city | to_city | departure_date | return_date | trip_id | trip_id | expense_type | amount |
++------+-----------+---------+----------------+-------------+---------+---------+--------------+--------+
+|    1 | chennai   | delhi   | 2015-01-11     | 2015-01-15  |    1000 |    1000 | TRAVEL       |   5000 |
+|    2 | chennai   | mumbai  | 2017-01-11     | 2017-01-15  |    2000 |    2000 | STAY         |  10000 |
++------+-----------+---------+----------------+-------------+---------+---------+--------------+--------+
+
+SELECT * FROM salesperson ORDER BY name asc;
++-----+--------+------------+---------+
+| ssn | name   | start_year | dept_no |
++-----+--------+------------+---------+
+|   2 | amruth |       2017 |     100 |
+|   3 | bala   |       2012 |     200 |
+|   1 | vidhya |       2015 |     100 |
++-----+--------+------------+---------+
+
+SELECT ssn FROM trip WHERE to_city='chennai' GROUP BY ssn HAVING COUNT(*)>1;
+Empty set 
+
+SELECT SUM(amount) FROM salerep_expense,trip INNER JOIN ON trip.trip_id=salerep_expense.trip_id WHERE trip.ssn=1;
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+create database carsale;
+use carsale
+CREATE TABLE car (serial_no int, model varchar(255), manufacturer varchar(255),price int, PRIMARY KEY(serial_no));
+CREATE TABLE options (serial_no int, option_name varchar(255),price int, FOREIGN KEY(serial_no) REFERENCES car(serial_no));
+CREATE TABLE salesperson ( salesperson_id int,name varchar(255),phone varchar(255),PRIMARY KEY(salesperson_id));
+CREATE TABLE sales (salesperson_id int, serial_no int,date date,sale_price int, FOREIGN KEY(serial_no) REFERENCES car(serial_no), FOREIGN KEY(salesperson_id) REFERENCES salesperson(salesperson_id));
+
+
+INSERT INTO car VALUES(1,'Etios','Toyota',1000000);
+INSERT INTO car VALUES(2,'Dezire','Swift',500000);
+INSERT INTO car VALUES(3,'21','BMW',1500000);
+INSERT INTO options VALUES(2,'plain',400000);
+INSERT INTO options VALUES(1,'GX',900000);
+INSERT INTO sales VALUES(1,2,'2019-01-18',500000);
+INSERT INTO sales VALUES(2,1,'2019-01-20',1000000);
+INSERT INTO salesperson VALUES(1,'Ram',9080431395);
+INSERT INTO salesperson VALUES(2,'Sangkeetha',8300979639);
+
+
+
+
+SELECT sales.serial_no,car.manufacturer,sales.sale_price FROM sales,car,salesperson WHERE sales.salesperson_id=salesperson.salesperson_id AND car.serial_no=sales.serial_no AND name='Ram'; 
++-----------+--------------+------------+
+| serial_no | manufacturer | sale_price |
++-----------+--------------+------------+
+|         2 | Swift        |     500000 |
++-----------+--------------+------------+
+
+
+
+SELECT car.serial_no,car.model FROM car left join options ON car.serial_no=options.serial_no GROUP BY car.serial_no HAVING count(options.serial_no)=0;
++-----------+-------+
+| serial_no | model |
++-----------+-------+
+|         3 | 21    |
++-----------+-------+
+
+
+
+SELECT car.serial_no,car.model,sales.sale_price FROM sales,car WHERE car.serial_no=sales.serial_no AND car.serial_no IN ( SELECT options.serial_no FROM car left join options ON car.serial_no=options.serial_no GROUP BY car.serial_no HAVING count(options.serial_no)>0);
++-----------+--------+------------+
+| serial_no | model  | sale_price |
++-----------+--------+------------+
+|         2 | Dezire |     500000 |
+|         1 | Etios  |    1000000 |
++-----------+--------+------------+
+
+
+
+UPDATE salesperson SET phone=9489227027 WHERE name='Sangkeetha';
+SELECT * FROM salesperson;
++----------------+------------+------------+
+| salesperson_id | name       | phone      |
++----------------+------------+------------+
+|              1 | Ram        | 9080431395 |
+|              2 | Sangkeetha | 9489227027 |
++----------------+------------+------------+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+CREATE DATABASE emp;
+use emp
+CREATE TABLE department (Dno int, Dname varchar(255), Managername varchar(255), PRIMARY KEY(Dno));
+CREATE TABLE employee (Empno int, Ename varchar(255), Address varchar(255),Sex varchar(255),DOB date,Dateofjoining date,Deptno int,Division varchar(255),Desig varchar(255),Salary int, PRIMARY KEY(Empno));
+INSERT INTO department VALUES(1,'admin','Kala'); 
+INSERT INTO department VALUES(2,'marketing','Mala'); 
+INSERT INTO department VALUES(3,'finance','Leela');
+INSERT INTO department VALUES(4,'sales','Sheela');
+
+INSERT INTO employee VALUES(1,'Vidhya','333','Female','2000-02-14','2017-02-14',1,'ne','worker',2000);
+INSERT INTO employee VALUES(2,'Amruth','334','male','2000-02-14','2018-02-14',2,'ne','worker',6000);
+INSERT INTO employee VALUES(3,'Naveen','335','male','2000-02-14','2019-02-14',3,'te','worker',4000); 
+INSERT INTO employee VALUES(4,'Bala','336','male','2001-02-14','2019-02-14',4,'se','manager',3000); 
+
+
+SELECT Ename,Division FROM employee WHERE salary NOT BETWEEN 3000 AND 5000;
++--------+----------+
+| Ename  | Division |
++--------+----------+
+| Vidhya | ne       |
+| Amruth | ne       |
++--------+----------+
+
+SELECT Ename,Salary FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname IN('admin','sales','finance');
++--------+--------+
+| Ename  | Salary |
++--------+--------+
+| Vidhya |   2000 |
+| Naveen |   4000 |
+| Bala   |   3000 |
++--------+--------+
+
+SELECT Ename FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname='sales' UNION SELECT Ename FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname='marketing';
++--------+
+| Ename  |
++--------+
+| Bala   |
+| Amruth |
++--------+
+
+SELECT Ename FROM employee WHERE Division='ne' OR Division='se';
++--------+
+| Ename  |
++--------+
+| Vidhya |
+| Amruth |
+| Bala   |
++--------+
+
+SELECT Ename FROM employee WHERE Salary=(SELECT MAX(Salary) FROM employee);
++--------+
+| Ename  |
++--------+
+| Amruth |
++--------+
+
+SELECT Desig, AVG(Salary) FROM employee GROUP BY Desig; 
++---------+-------------+
+| Desig   | AVG(Salary) |
++---------+-------------+
+| manager |   3000.0000 |
+| worker  |   4000.0000 |
++---------+-------------+
+
+SELECT Ename FROM employee WHERE Salary IN (SELECT MIN(Salary) FROM employee GROUP BY Deptno);
++--------+
+| Ename  |
++--------+
+| Vidhya |
+| Amruth |
+| Naveen |
+| Bala   |
++--------+
+
+
+
+
+
+INSERT INTO employee VALUES(5,'Praveen','339','male','2000-02-14','2019-02-14',3,'te','worker',7000); 
+
+
+
+
+
+ SELECT * FROM employee WHERE Desig!='manager';
++-------+---------+---------+--------+------------+---------------+--------+----------+--------+--------+
+| Empno | Ename   | Address | Sex    | DOB        | Dateofjoining | Deptno | Division | Desig  | Salary |
++-------+---------+---------+--------+------------+---------------+--------+----------+--------+--------+
+|     1 | Vidhya  | 333     | Female | 2000-02-14 | 2017-02-14    |      1 | ne       | worker |   2000 |
+|     2 | Amruth  | 334     | male   | 2000-02-14 | 2018-02-14    |      2 | ne       | worker |   6000 |
+|     3 | Naveen  | 335     | male   | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   4000 |
+|     5 | Praveen | 339     | male   | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   7000 |
++-------+---------+---------+--------+------------+---------------+--------+----------+--------+--------+
+
+
+SELECT Dname FROM department LEFT JOIN employee ON employee.Deptno=department.Dno GROUP BY Dname HAVING COUNT(employee.Ename) = 0; 
+Empty set (0.00 sec)
+
+
+select * from employee where Desig != 'manager' and Salary > (select max(Salary) from employee where Desig = 'manager');
++-------+---------+---------+------+------------+---------------+--------+----------+--------+--------+
+| Empno | Ename   | Address | Sex  | DOB        | Dateofjoining | Deptno | Division | Desig  | Salary |
++-------+---------+---------+------+------------+---------------+--------+----------+--------+--------+
+|     2 | Amruth  | 334     | male | 2000-02-14 | 2018-02-14    |      2 | ne       | worker |   6000 |
+|     3 | Naveen  | 335     | male | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   4000 |
+|     5 | Praveen | 339     | male | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   7000 |
++-------+---------+---------+------+------------+---------------+--------+----------+--------+--------+
+
+
+ 8,15
+
+
+
+
+
+SELECT Ename, (YEAR(CURDATE())-YEAR(DOB)) as age FROM employee;
++---------+------+
+| Ename   | age  |
++---------+------+
+| Vidhya  |   19 |
+| Amruth  |   19 |
+| Naveen  |   19 |
+| Bala    |   18 |
+| Praveen |   19 |
++---------+------+
+
+SELECT Ename, (YEAR(CURDATE())-YEAR(Dateofjoining)) as experience FROM employee WHERE (YEAR(CURDATE())-YEAR(Dateofjoining))>10;
+Empty set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+create database hstmgt;
+
+drop database hstmgt;
+
+create database hstmgt;
+
+use hstmgt
+source Documents/DBMS/ex3.sql
+
+CREATE TABLE Hostel (hno int, hname varchar(255), type varchar(255) , PRIMARY KEY(hno), check(type in ('girls','boys')));
+
+CREATE TABLE Menu (hno int, day varchar(255), breakfast varchar(255), lunch varchar(255), dinner varchar(255), FOREIGN KEY(hno) REFERENCES Hostel(hno));
+
+CREATE TABLE Warden (wname varchar(255), qual varchar(255), hno int, FOREIGN KEY(hno) REFERENCES Hostel(hno));
+
+CREATE TABLE Student (sid int, sname varchar(255), gender varchar(255), year int, hno int, PRIMARY KEY(sid), FOREIGN KEY(hno) REFERENCES Hostel(hno));
+
+insert into Hostel values(1,'opal','girls');
+insert into Hostel values(2,'agate','boys');
+insert into Hostel values(3,'coral','boys');
+
+insert into Menu values(1,'monday','idly','sambar','idly');
+insert into Menu values(1,'tuesday','dosa','biriyani','dosa');
+insert into Menu values(1,'wednesday','vada','pulav','vada');
+insert into Menu values(1,'thursday','idly','sambar','idly');
+insert into Menu values(1,'friday','dosa','biriyani','dosa');
+insert into Menu values(1,'saturday','vada','pulav','vada');
+insert into Menu values(1,'sunday','paratha','chicken','paratha');
+
+insert into Menu values(2,'tuesday','idly','sambar','idly');
+insert into Menu values(2,'wednesday','dosa','biriyani','dosa');
+insert into Menu values(2,'thursday','vada','pulav','vada');
+insert into Menu values(2,'friday','idly','sambar','idly');
+insert into Menu values(2,'saturday','dosa','biriyani','dosa');
+insert into Menu values(2,'monday','vada','pulav','vada');
+insert into Menu values(2,'sunday','paratha','chicken','paratha');
+
+insert into Menu values(3,'wednesday','idly','sambar','idly');
+insert into Menu values(3,'thursday','dosa','biriyani','dosa');
+insert into Menu values(3,'friday','vada','pulav','vada');
+insert into Menu values(3,'saturday','idly','sambar','idly');
+insert into Menu values(3,'monday','dosa','biriyani','dosa');
+insert into Menu values(3,'tuesday','vada','pulav','vada');
+insert into Menu values(3,'sunday','paratha','chicken','paratha');
+
+insert into Warden values('kala','B.Com',1);
+insert into Warden values('mala','B.SC',2);
+insert into Warden values('leela','M.SC',3);
+
+
+insert into Student values(1,'vidhya','female',3,1);
+insert into Student values(2,'kaviya','female',2,1);
+insert into Student values(3,'devi','female',1,1);
+insert into Student values(4,'naveen','male',3,2);
+insert into Student values(5,'amruth','male',2,2);
+insert into Student values(6,'venu','male',1,2);
+insert into Student values(7,'moorthy','male',3,3);
+insert into Student values(8,'bala','male',2,3);
+insert into Student values(9,'ramana','male',1,3);
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM Hostel;
++-----+-------+-------+
+| hno | hname | type  |
++-----+-------+-------+
+|   1 | opal  | girls |
+|   2 | agate | boys  |
+|   3 | coral | boys  |
++-----+-------+-------+
+
+SELECT * FROM Menu;
++------+-----------+-----------+----------+---------+
+| hno  | day       | breakfast | lunch    | dinner  |
++------+-----------+-----------+----------+---------+
+|    1 | monday    | idly      | sambar   | idly    |
+|    1 | tuesday   | dosa      | biriyani | dosa    |
+|    1 | wednesday | vada      | pulav    | vada    |
+|    1 | thursday  | idly      | sambar   | idly    |
+|    1 | friday    | dosa      | biriyani | dosa    |
+|    1 | saturday  | vada      | pulav    | vada    |
+|    1 | sunday    | paratha   | chicken  | paratha |
+|    2 | tuesday   | idly      | sambar   | idly    |
+|    2 | wednesday | dosa      | biriyani | dosa    |
+|    2 | thursday  | vada      | pulav    | vada    |
+|    2 | friday    | idly      | sambar   | idly    |
+|    2 | saturday  | dosa      | biriyani | dosa    |
+|    2 | monday    | vada      | pulav    | vada    |
+|    2 | sunday    | paratha   | chicken  | paratha |
+|    3 | wednesday | idly      | sambar   | idly    |
+|    3 | thursday  | dosa      | biriyani | dosa    |
+|    3 | friday    | vada      | pulav    | vada    |
+|    3 | saturday  | idly      | sambar   | idly    |
+|    3 | monday    | dosa      | biriyani | dosa    |
+|    3 | tuesday   | vada      | pulav    | vada    |
+|    3 | sunday    | paratha   | chicken  | paratha |
++------+-----------+-----------+----------+---------+
+
+SELECT * FROM Warden;
++-------+-------+------+
+| wname | qual  | hno  |
++-------+-------+------+
+| kala  | B.Com |    1 |
+| mala  | B.SC  |    2 |
+| leela | M.SC  |    3 |
++-------+-------+------+
+
+SELECT * FROM Student;
++-----+---------+--------+------+------+
+| sid | sname   | gender | year | hno  |
++-----+---------+--------+------+------+
+|   1 | vidhya  | female |    3 |    1 |
+|   2 | kaviya  | female |    2 |    1 |
+|   3 | devi    | female |    1 |    1 |
+|   4 | naveen  | male   |    3 |    2 |
+|   5 | amruth  | male   |    2 |    2 |
+|   6 | venu    | male   |    1 |    2 |
+|   7 | moorthy | male   |    3 |    3 |
+|   8 | bala    | male   |    2 |    3 |
+|   9 | ramana  | male   |    1 |    3 |
++-----+---------+--------+------+------+
+
+
+
+
+SELECT type,COUNT(type) FROM Hostel GROUP BY type;
++-------+-------------+
+| type  | COUNT(type) |
++-------+-------------+
+| boys  |           2 |
+| girls |           1 |
++-------+-------------+
+
+SELECT breakfast,lunch,dinner FROM Menu WHERE hno=2 AND day='tuesday';
++-----------+--------+--------+
+| breakfast | lunch  | dinner |
++-----------+--------+--------+
+| idly      | sambar | idly   |
++-----------+--------+--------+
+
+insert into Warden values('sheela','M.Tech',1);
+
+SELECT hno,COUNT(wname) FROM Warden GROUP BY hno; 
++------+--------------+
+| hno  | COUNT(wname) |
++------+--------------+
+|    1 |            2 |
+|    2 |            1 |
+|    3 |            1 |
++------+--------------+
+
+SELECT hno,COUNT(sid) FROM Student GROUP BY hno; 
++------+------------+
+| hno  | COUNT(sid) |
++------+------------+
+|    1 |          3 |
+|    2 |          3 |
+|    3 |          3 |
++------+------------+
+
+UPDATE Menu SET breakfast='noodles' WHERE hno=3 AND day='thursday';
+SELECT * FROM Menu ;
++------+-----------+-----------+----------+---------+
+| hno  | day       | breakfast | lunch    | dinner  |
++------+-----------+-----------+----------+---------+
+|    1 | monday    | idly      | sambar   | idly    |
+|    1 | tuesday   | dosa      | biriyani | dosa    |
+|    1 | wednesday | vada      | pulav    | vada    |
+|    1 | thursday  | idly      | sambar   | idly    |
+|    1 | friday    | dosa      | biriyani | dosa    |
+|    1 | saturday  | vada      | pulav    | vada    |
+|    1 | sunday    | paratha   | chicken  | paratha |
+|    2 | tuesday   | idly      | sambar   | idly    |
+|    2 | wednesday | dosa      | biriyani | dosa    |
+|    2 | thursday  | vada      | pulav    | vada    |
+|    2 | friday    | idly      | sambar   | idly    |
+|    2 | saturday  | dosa      | biriyani | dosa    |
+|    2 | monday    | vada      | pulav    | vada    |
+|    2 | sunday    | paratha   | chicken  | paratha |
+|    3 | wednesday | idly      | sambar   | idly    |
+|    3 | thursday  | noodles   | biriyani | dosa    |
+|    3 | friday    | vada      | pulav    | vada    |
+|    3 | saturday  | idly      | sambar   | idly    |
+|    3 | monday    | dosa      | biriyani | dosa    |
+|    3 | tuesday   | vada      | pulav    | vada    |
+|    3 | sunday    | paratha   | chicken  | paratha |
++------+-----------+-----------+----------+---------+
+
+
+SELECT hno,wname FROM Warden WHERE qual='B.Com';
++------+-------+
+| hno  | wname |
++------+-------+
+|    1 | kala  |
++------+-------+
+
+ SELECT COUNT(sname) FROM Student WHERE sname LIKE 'a%' AND hno=2;
++--------------+
+| COUNT(sname) |
++--------------+
+|            1 |
++--------------+
+
+SELECT year,COUNT(sid) FROM Student WHERE gender='male' GROUP BY year; 
++------+------------+
+| year | COUNT(sid) |
++------+------------+
+|    1 |          2 |
+|    2 |          2 |
+|    3 |          2 |
++------+------------+
+
+
+SELECT Hname,wname FROM Hostel,Warden WHERE Hostel.hno=Warden.hno AND type='girls';
++-------+--------+
+| Hname | wname  |
++-------+--------+
+| opal  | kala   |
+| opal  | sheela |
++-------+--------+
+
+
+SELECT hname,wname FROM Student,Hostel,Warden WHERE Student.hno=Hostel.hno AND Student.hno=Warden.hno AND year=3;
++-------+--------+
+| hname | wname  |
++-------+--------+
+| opal  | kala   |
+| agate | mala   |
+| coral | leela  |
+| opal  | sheela |
++-------+--------+
+
+
+SELECT wname,COUNT(sid) FROM Warden LEFT JOIN Student ON Warden.hno=Student.hno GROUP BY wname ;
++--------+------------+
+| wname  | COUNT(sid) |
++--------+------------+
+| kala   |          3 |
+| leela  |          3 |
+| mala   |          3 |
+| sheela |          3 |
++--------+------------+
+
+
+CREATE VIEW view1 AS SELECT sname,gender,Student.hno,hname FROM Student,Hostel WHERE Hostel.hno=Student.hno; 
+Query OK, 0 rows affected (0.05 sec)
+
+SELECT * FROM view1;
++---------+--------+------+-------+
+| sname   | gender | hno  | hname |
++---------+--------+------+-------+
+| vidhya  | female |    1 | opal  |
+| kaviya  | female |    1 | opal  |
+| devi    | female |    1 | opal  |
+| naveen  | male   |    2 | agate |
+| amruth  | male   |    2 | agate |
+| venu    | male   |    2 | agate |
+| moorthy | male   |    3 | coral |
+| bala    | male   |    3 | coral |
+| ramana  | male   |    3 | coral |
++---------+--------+------+-------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+create database tution;
+
+use tution
+
+CREATE TABLE Department (deptid int, deptname varchar(255), PRIMARY KEY(deptid));
+
+CREATE TABLE Student (rollno int, name varchar(255), gender varchar(255), mark1 int, mark2 int, mark3 int, total int,average int, deptid int, PRIMARY KEY(rollno), FOREIGN KEY(deptid) REFERENCES Department(deptid));
+
+CREATE TABLE Staff (staffid int, name varchar(255), designation varchar(255), qualification varchar(255), deptid int, PRIMARY KEY(staffid), FOREIGN KEY(deptid) REFERENCES Department(deptid));
+
+CREATE TABLE Tutor (rollno int, staffid int, FOREIGN KEY(rollno) REFERENCES Student(rollno),FOREIGN KEY(staffid) REFERENCES Staff(staffid) );
+
+INSERT INTO Department values (1,'cse');
+INSERT INTO Department values (2,'ece');
+
+INSERT INTO Student values (1,'vidhya','female',90,90,90,0,0,1);
+INSERT INTO Student values (2,'naveen','male',100,100,100,0,0,1);
+INSERT INTO Student values (3,'amruth','male',80,80,80,0,0,2);
+INSERT INTO Student values (4,'boobalan','male',70,70,70,0,0,2);
+
+INSERT INTO Staff values (10,'mala','Professor','Phd',1);
+INSERT INTO Staff values (11,'leela','Professor','Phd',2);
+
+INSERT INTO Tutor values (1,10);
+INSERT INTO Tutor values (3,10);
+INSERT INTO Tutor values (2,11);
+INSERT INTO Tutor values (4,11);
+
+UPDATE Student SET total=(mark1+mark2+mark3);
+UPDATE Student SET average=total/3;
+
+SELECT * FROM Department;
++--------+----------+
+| deptid | deptname |
++--------+----------+
+|      1 | cse      |
+|      2 | ece      |
++--------+----------+
+
+SELECT * FROM Student;
++--------+----------+--------+-------+-------+-------+-------+---------+--------+
+| rollno | name     | gender | mark1 | mark2 | mark3 | total | average | deptid |
++--------+----------+--------+-------+-------+-------+-------+---------+--------+
+|      1 | vidhya   | female |    90 |    90 |    90 |   270 |      90 |      1 |
+|      2 | naveen   | male   |   100 |   100 |   100 |   300 |     100 |      1 |
+|      3 | amruth   | male   |    80 |    80 |    80 |   240 |      80 |      2 |
+|      4 | boobalan | male   |    70 |    70 |    70 |   210 |      70 |      2 |
++--------+----------+--------+-------+-------+-------+-------+---------+--------+
+
+SELECT * FROM Staff;
++---------+-------+-------------+---------------+--------+
+| staffid | name  | designation | qualification | deptid |
++---------+-------+-------------+---------------+--------+
+|      10 | mala  | Professor   | Phd           |      1 |
+|      11 | leela | Professor   | Phd           |      2 |
++---------+-------+-------------+---------------+--------+
+
+SELECT * FROM Tutor;
++--------+---------+
+| rollno | staffid |
++--------+---------+
+|      1 |      10 |
+|      3 |      10 |
+|      2 |      11 |
+|      4 |      11 |
++--------+---------+
+
+
+
+
+SELECT COUNT(rollno) FROM  Student WHERE deptid=1;
++---------------+
+| COUNT(rollno) |
++---------------+
+|             2 |
++---------------+
+
+SELECT * FROM  Student WHERE average>85;
++--------+--------+--------+-------+-------+-------+-------+---------+--------+
+| rollno | name   | gender | mark1 | mark2 | mark3 | total | average | deptid |
++--------+--------+--------+-------+-------+-------+-------+---------+--------+
+|      1 | vidhya | female |    90 |    90 |    90 |   270 |      90 |      1 |
+|      2 | naveen | male   |   100 |   100 |   100 |   300 |     100 |      1 |
++--------+--------+--------+-------+-------+-------+-------+---------+--------+
+
+SELECT COUNT(rollno) FROM  Tutor WHERE staffid=10;
++---------------+
+| COUNT(rollno) |
++---------------+
+|             2 |
++---------------+
+
+SELECT * FROM Staff WHERE deptid=(SELECT deptid FROM Department WHERE deptname='cse');
++---------+------+-------------+---------------+--------+
+| staffid | name | designation | qualification | deptid |
++---------+------+-------------+---------------+--------+
+|      10 | mala | Professor   | Phd           |      1 |
++---------+------+-------------+---------------+--------+
+
+SELECT COUNT(DISTINCT(designation)),COUNT(DISTINCT(deptid)) FROM Staff;
++------------------------------+-------------------------+
+| COUNT(DISTINCT(designation)) | COUNT(DISTINCT(deptid)) |
++------------------------------+-------------------------+
+|                            1 |                       2 |
++------------------------------+-------------------------+
+
+SELECT * FROM Student WHERE name LIKE 'r%';
+Empty set (0.00 sec)
+
+SELECT Student.deptid,deptname,Staff.staffid,Staff.name FROM Student,Staff,Tutor,Department WHERE Tutor.rollno=Student.rollno AND Tutor.staffid=Staff.staffid AND Student.deptid=Department.deptid AND Tutor.rollno=3; 
++--------+----------+---------+------+
+| deptid | deptname | staffid | name |
++--------+----------+---------+------+
+|      2 | ece      |      10 | mala |
++--------+----------+---------+------+
+
+SELECT deptid,gender,COUNT(gender) FROM Student WHERE gender='male' GROUP BY deptid UNION SELECT deptid,gender,COUNT(gender) FROM Student WHERE gender='female' GROUP BY deptid;
++--------+--------+---------------+
+| deptid | gender | COUNT(gender) |
++--------+--------+---------------+
+|      1 | male   |             1 |
+|      2 | male   |             2 |
+|      1 | female |             1 |
++--------+--------+---------------+
+
+SELECT staffid,rollno FROM Tutor WHERE rollno IN (SELECT rollno FROM Student WHERE total IN (SELECT MAX(total) FROM Student GROUP BY deptid));
++---------+--------+
+| staffid | rollno |
++---------+--------+
+|      10 |      3 |
+|      11 |      2 |
++---------+--------+
+
+SELECT staffid,rollno FROM Tutor WHERE rollno IN (SELECT rollno FROM Student WHERE gender='female');
++---------+--------+
+| staffid | rollno |
++---------+--------+
+|      10 |      1 |
++---------+--------+
+
+CREATE VIEW view1 AS SELECT staffid,name,qualification,deptname FROM Staff,Department WHERE Staff.deptid=Department.deptid AND designation='professor'; 
+Query OK, 0 rows affected (0.07 sec)
+
+SELECT * FROM view1;
++---------+-------+---------------+----------+
+| staffid | name  | qualification | deptname |
++---------+-------+---------------+----------+
+|      10 | mala  | Phd           | cse      |
+|      11 | leela | Phd           | ece      |
++---------+-------+---------------+----------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

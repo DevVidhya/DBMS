@@ -1,0 +1,592 @@
+enter mysql command
+create database - semicolon must be used
+create database hstmgt;
+
+
+select type from (SELECT type,COUNT(type) as number2 FROM Hostel GROUP BY type) as table3 where number2= (select max(number) from (SELECT type,COUNT(type) as number FROM Hostel GROUP BY type) as table2);
++------+
+| type |
++------+
+| boys |
++------+
+
+
+drop database hstmgt;
+
+SELECT COUNT(DISTINCT(designation)),COUNT(DISTINCT(deptid)) FROM Staff
+
+year(curdate()) gives current year
+
+use database
+primary key                             - primary key(Empid)
+foreign key                             - foreign key(Empid) references Employee(Empid)
+date variable keyword and its value     - Doj date  - 2019-02-14 
+asc and desc ordering                   - select * from Employee order by Empname desc; - order by Empname asc
+name stating with B                     - select * from Employee where Empname like 'B%';
+
+sum(salary), avg(salary)
+
+create separate table or in(  ) or joins to approach problems
+
+salary not in the range 3000 - 5000     - 
+SELECT Ename,Salary FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname IN('admin','sales','finance');
+or
+SELECT Ename FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname='admin' UNION SELECT Ename FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname='sales' UNION SELECT Ename FROM employee,department WHERE employee.Deptno=department.Dno AND department.Dname='finance';
+
+check(Age >= 17)
+
+inserting values only to specific variables and updating the table for remaining values    -    INSERT INTO Student(Rollno,Name,m1,m2,m3,m4,m5,m6) VALUES(1,'Vidhya',90,90,90,90,90,90);                     - UPDATE Student SET total=m1+m2+m3+m4+m5+m6;
+
+select * from Student,StudDep where Student.Rollno=StudDep.Rollno and Deptid=300;
+select * from Student,StudDep where Deptid=300 and Student.Rollno=StudDep.Rollno;      both are same
+
+select Rollno from StudDep, Department where Department.Deptid=StudDep.Deptid and Deptname='CSE';
+is better than
+SELECT Student.Rollno FROM Student,StudDep WHERE Student.Rollno=StudDep.Rollno AND Deptid=(SELECT Deptid FROM Department WHERE Deptname='CSE'); 
+
+keep phone number in varchar
+
+Foreign key relationships involve a parent table that holds the central data values, and a child table with identical values pointing back to its parent. The FOREIGN KEY clause is specified in the child table.
+It will reject any INSERT or UPDATE operation that attempts to create a foreign key value in a child table if there is no a matching candidate key value in the parent table.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                        Question number 1 - no need
+mysql -u root -p
+create database swcompany;     
+use swcompany
+
+create table Employee(Empid int, Empname varchar(255), Address varchar(255), Doj date, Salary int, primary key(Empid));
+CREATE TABLE Project (Projectno int, Duration varchar(255), Projectname varchar(255), PRIMARY KEY(Projectno));
+create table Workson(Empid int, Projectno int, foreign key(Empid) references Employee(Empid), foreign key(Projectno) references Project(Projectno));
+
+
+1. select * from Employee order by Empname desc;
++-------+----------+---------+------------+--------+
+| Empid | Empname  | Address | Doj        | Salary |
++-------+----------+---------+------------+--------+
+|     1 | Vidhya   | 333-C   | 2019-02-14 |  90000 |
+|     4 | Keerthi  | 303-D   | 2019-01-10 |  60000 |
+|     2 | Bharathi | 300-C   | 2019-01-20 |  80000 |
+|     3 | Bala     | 303-A   | 2019-01-30 |  70000 |
++-------+----------+---------+------------+--------+
+
+2. select * from Project where Projectno=2;
++-----------+----------+-------------+
+| Projectno | Duration | Projectname |
++-----------+----------+-------------+
+|         2 | 3 months | Arduino     |
++-----------+----------+-------------+
+
+3. select * from Employee where Empname like 'B%';
++-------+----------+---------+------------+--------+
+| Empid | Empname  | Address | Doj        | Salary |
++-------+----------+---------+------------+--------+
+|     2 | Bharathi | 300-C   | 2019-01-20 |  80000 |
+|     3 | Bala     | 303-A   | 2019-01-30 |  70000 |
++-------+----------+---------+------------+--------+
+
+4. select Empid from Workson where Projectno=1;
++-------+
+| Empid |
++-------+
+|     3 |
+|     4 |
++-------+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                        Question number 3
+
+
+select * from salesperson;
++-----+--------+------------+---------+
+| ssn | name   | start_year | dept_no |
++-----+--------+------------+---------+
+|   1 | vidhya |       2015 |     100 |
+|   2 | amruth |       2017 |     100 |
+|   3 | bala   |       2012 |     200 |
++-----+--------+------------+---------+
+
+select * from trip;
++------+-----------+---------+----------------+-------------+---------+
+| ssn  | from_city | to_city | departure_date | return_date | trip_id |
++------+-----------+---------+----------------+-------------+---------+
+|    1 | delhi     | chennai | 2015-01-11     | 2015-01-15  |    1000 |
+|    2 | chennai   | mumbai  | 2017-01-11     | 2017-01-15  |    2000 |
+|    1 | mumbai    | chennai | 2015-01-11     | 2015-01-15  |    3000 |
++------+-----------+---------+----------------+-------------+---------+
+
+select * from salerep_expense;
++---------+--------------+--------+
+| trip_id | expense_type | amount |
++---------+--------------+--------+
+|    1000 | TRAVEL       |   5000 |
+|    1000 | STAY         |   1000 |
+|    2000 | STAY         |  10000 |
+|    3000 | STAY         |  10000 |
++---------+--------------+--------+
+
+
+
+
+2. SELECT ssn FROM trip WHERE to_city='chennai' GROUP BY ssn HAVING COUNT(*)>1;
++------+
+| ssn  |
++------+
+|    1 |
++------+
+
+
+3. select sum(amount) from trip, salerep_expense where trip.trip_id=salerep_expense.trip_id and ssn=1;;
++-------------+
+| sum(amount) |
++-------------+
+|       16000 |
++-------------+
+
+
+
+SELECT * FROM trip WHERE to_city='chennai' GROUP BY ssn;
+ERROR 1055 (42000): Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'travel.trip.from_city' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+
+
+SELECT ssn FROM trip WHERE to_city='chennai' GROUP BY ssn;
++------+
+| ssn  |
++------+
+|    1 |
++------+
+
+select ssn,count(*) from trip where to_city="chennai" group by ssn;
++------+----------+
+| ssn  | count(*) |
++------+----------+
+|    1 |        2 |
++------+----------+
+
+---------------------------------------------------------------------------------------------------------------------------------
+                                                                        Question number 4
+
+
+2. select serial_no, model from car where serial_no not in (select serial_no from options group by serial_no);
++-----------+-------+
+| serial_no | model |
++-----------+-------+
+|         3 | 21    |
++-----------+-------+
+ 
+or 
+
+SELECT car.serial_no,car.model FROM car left join options ON car.serial_no=options.serial_no GROUP BY car.serial_no HAVING count(options.serial_no)=0;
++-----------+-------+
+| serial_no | model |
++-----------+-------+
+|         3 | 21    |
++-----------+-------+
+select serial_no, count(*) from options group by serial_no;
++-----------+----------+
+| serial_no | count(*) |
++-----------+----------+
+|         1 |        1 |
+|         2 |        1 |
++-----------+----------+
+so 3 can't be found by count(*)=0 in options table;
+
+3. select car.serial_no, model, sale_price from car, sales where car.serial_no=sales.serial_no and car.serial_no in (select serial_no from options group by serial_no);
++-----------+--------+------------+
+| serial_no | model  | sale_price |
++-----------+--------+------------+
+|         2 | Dezire |     500000 |
+|         1 | Etios  |    1000000 |
++-----------+--------+------------+
+
+
+
+select * from car left join options on car.serial_no=options.serial_no;
++-----------+--------+--------------+---------+-----------+-------------+--------+
+| serial_no | model  | manufacturer | price   | serial_no | option_name | price  |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+|         2 | Dezire | Swift        |  500000 |         2 | plain       | 400000 |
+|         1 | Etios  | Toyota       | 1000000 |         1 | GX          | 900000 |
+|         3 | 21     | BMW          | 1500000 |      NULL | NULL        |   NULL |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+
+
+mysql> mysql> select * from car right join options on car.serial_no=options.serial_no;
++-----------+--------+--------------+---------+-----------+-------------+--------+
+| serial_no | model  | manufacturer | price   | serial_no | option_name | price  |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+|         1 | Etios  | Toyota       | 1000000 |         1 | GX          | 900000 |
+|         2 | Dezire | Swift        |  500000 |         2 | plain       | 400000 |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+
+
+select * from car,options where car.serial_no=options.serial_no;
++-----------+--------+--------------+---------+-----------+-------------+--------+
+| serial_no | model  | manufacturer | price   | serial_no | option_name | price  |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+|         1 | Etios  | Toyota       | 1000000 |         1 | GX          | 900000 |
+|         2 | Dezire | Swift        |  500000 |         2 | plain       | 400000 |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+
+
+select * from car inner join options on car.serial_no=options.serial_no;
++-----------+--------+--------------+---------+-----------+-------------+--------+
+| serial_no | model  | manufacturer | price   | serial_no | option_name | price  |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+|         1 | Etios  | Toyota       | 1000000 |         1 | GX          | 900000 |
+|         2 | Dezire | Swift        |  500000 |         2 | plain       | 400000 |
++-----------+--------+--------------+---------+-----------+-------------+--------+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                        lab 2
+INSERT INTO employee VALUES(5,'Santhana','333','Female','2000-02-14','2017-02-14',1,'ne','worker',1000);
+INSERT INTO employee VALUES(6,'lala','336','male','2001-02-14','2019-02-14',4,'se','manager',3000);
+INSERT INTO employee VALUES(6,'lala','336','male','2001-02-14','2019-02-14',4,'se','manager',3000);
+
+4. SELECT Ename FROM employee WHERE Division='ne' OR Division='se';
++--------+
+| Ename  |
++--------+
+| Vidhya |
+| Amruth |
+| Bala   |
++--------+
+
+or 
+
+SELECT Ename FROM employee WHERE Division in ('ne', 'se');
++--------+
+| Ename  |
++--------+
+| Vidhya |
+| Amruth |
+| Bala   |
++--------+
+
+5. SELECT Ename FROM employee WHERE Salary=(SELECT MAX(Salary) FROM employee);
++--------+
+| Ename  |
++--------+
+| Amruth |
++--------+
+
+6. select Desig, avg(salary) from employee group by Desig;
++---------+-------------+
+| Desig   | avg(salary) |
++---------+-------------+
+| manager |   3000.0000 |
+| worker  |   4000.0000 |
++---------+-------------+
+
+7. select * from employee;
++-------+----------+---------+--------+------------+---------------+--------+----------+---------+--------+
+| Empno | Ename    | Address | Sex    | DOB        | Dateofjoining | Deptno | Division | Desig   | Salary |
++-------+----------+---------+--------+------------+---------------+--------+----------+---------+--------+
+|     1 | Vidhya   | 333     | Female | 2000-02-14 | 2017-02-14    |      1 | ne       | worker  |   2000 |
+|     2 | Amruth   | 334     | male   | 2000-02-14 | 2018-02-14    |      2 | ne       | worker  |   6000 |
+|     3 | Naveen   | 335     | male   | 2000-02-14 | 2019-02-14    |      3 | te       | worker  |   4000 |
+|     4 | Bala     | 336     | male   | 2001-02-14 | 2019-02-14    |      4 | se       | manager |   3000 |
+|     5 | Santhana | 333     | Female | 2000-02-14 | 2017-02-14    |      1 | ne       | worker  |   1000 |
+|     6 | lala     | 336     | male   | 2001-02-14 | 2019-02-14    |      4 | se       | manager |   3000 |
+|     7 | kala     | 336     | male   | 2001-02-14 | 2019-02-14    |      4 | se       | manager |   4000 |
++-------+----------+---------+--------+------------+---------------+--------+----------+---------+--------+
+
+select employee.Deptno, Ename from employee,(select Deptno,min(Salary) as minimum from employee group by Deptno) as table1 where table1.Deptno=employee.Deptno and table1.minimum=employee.Salary;
++--------+----------+
+| Deptno | Ename    |
++--------+----------+
+|      2 | Amruth   |
+|      3 | Naveen   |
+|      4 | Bala     |
+|      1 | Santhana |
+|      4 | lala     |
++--------+----------+
+
+
+
+8. select employee.Deptno, Ename from employee,(select Deptno,avg(Salary) as average from employee group by Deptno) as table2 where table2.Deptno=employee.Deptno and table2.average<employee.Salary;
++--------+--------+
+| Deptno | Ename  |
++--------+--------+
+|      1 | Vidhya |
+|      4 | kala   |
++--------+--------+
+
+
+
+9. SELECT * FROM employee WHERE Desig!='manager';
++-------+---------+---------+--------+------------+---------------+--------+----------+--------+--------+
+| Empno | Ename   | Address | Sex    | DOB        | Dateofjoining | Deptno | Division | Desig  | Salary |
++-------+---------+---------+--------+------------+---------------+--------+----------+--------+--------+
+|     1 | Vidhya  | 333     | Female | 2000-02-14 | 2017-02-14    |      1 | ne       | worker |   2000 |
+|     2 | Amruth  | 334     | male   | 2000-02-14 | 2018-02-14    |      2 | ne       | worker |   6000 |
+|     3 | Naveen  | 335     | male   | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   4000 |
+|     5 | Praveen | 339     | male   | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   7000 |
++-------+---------+---------+--------+------------+---------------+--------+----------+--------+--------+
+
+
+10. select * from employee where Desig != 'manager' and Salary > (select min(Salary) from employee where Desig = 'manager');
++-------+---------+---------+------+------------+---------------+--------+----------+--------+--------+
+| Empno | Ename   | Address | Sex  | DOB        | Dateofjoining | Deptno | Division | Desig  | Salary |
++-------+---------+---------+------+------------+---------------+--------+----------+--------+--------+
+|     2 | Amruth  | 334     | male | 2000-02-14 | 2018-02-14    |      2 | ne       | worker |   6000 |
+|     3 | Naveen  | 335     | male | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   4000 |
+|     5 | Praveen | 339     | male | 2000-02-14 | 2019-02-14    |      3 | te       | worker |   7000 |
++-------+---------+---------+------+------------+---------------+--------+----------+--------+--------+
+
+11. SELECT Dname FROM department LEFT JOIN employee ON employee.Deptno=department.Dno GROUP BY Dname HAVING COUNT(employee.Ename) = 0; 
+Empty set (0.00 sec)
+
+14. SELECT Ename, (YEAR(CURDATE())-YEAR(Dateofjoining)) as experience FROM employee WHERE (YEAR(CURDATE())-YEAR(Dateofjoining))>10;
+Empty set (0.00 sec)
+
+
+following can't be done
+SELECT Ename, (YEAR(CURDATE())-YEAR(Dateofjoining)) as experience FROM employee WHERE experience>10;
+ERROR 1054 (42S22): Unknown column 'experience' in 'where clause'
+select Ename, experience from (select Ename, (year(curdate())-YEAR(Dateofjoining)) as experience from employee) as table3 where table3.experience>10;
+is correct
+
+15. create view view1 as select Empno, Ename from employee;
+select * from view1;
++-------+--------+
+| Empno | Ename  |
++-------+--------+
+|     1 | Vidhya |
+|     2 | Amruth |
+|     3 | Naveen |
+|     4 | Bala   |
++-------+--------+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                               lab 3
+                                                                          Question number 1
+
+1. CREATE TABLE Hostel (hno int, hname varchar(255), type varchar(255) , PRIMARY KEY(hno), check(type in ('girls','boys')));
+
+insert into Hostel values(4,'jade','hello');
+select * from Hostel;
++-----+-------+-------+
+| hno | hname | type  |
++-----+-------+-------+
+|   1 | opal  | girls |
+|   4 | jade  | hello |
++-----+-------+-------+
+
+
+2. select type,count(hno) from Hostel group by type;
++-------+------------+
+| type  | count(hno) |
++-------+------------+
+| boys  |          2 |
+| girls |          1 |
++-------+------------+
+
+4. insert into Warden values('sheela','M.Tech',1);
+
+SELECT hno,COUNT(wname) FROM Warden GROUP BY hno; 
++------+--------------+
+| hno  | COUNT(wname) |
++------+--------------+
+|    1 |            2 |
+|    2 |            1 |
+|    3 |            1 |
++------+--------------+
+
+5. SELECT hno,COUNT(sid) FROM Student GROUP BY hno; 
++------+------------+
+| hno  | COUNT(sid) |
++------+------------+
+|    1 |          3 |
+|    2 |          3 |
+|    3 |          3 |
++------+------------+
+
+
+7. SELECT hno,wname FROM Warden WHERE qual='B.Com';
++------+-------+
+| hno  | wname |
++------+-------+
+|    1 | kala  |
++------+-------+
+
+8. SELECT COUNT(sname) FROM Student WHERE sname LIKE 'a%' AND hno=2;
++--------------+
+| COUNT(sname) |
++--------------+
+|            1 |
++--------------+
+
+9. SELECT year,COUNT(sid) FROM Student WHERE gender='male' GROUP BY year; 
++------+------------+
+| year | COUNT(sid) |
++------+------------+
+|    1 |          2 |
+|    2 |          2 |
+|    3 |          2 |
++------+------------+
+
+
+10. SELECT Hname,wname FROM Hostel,Warden WHERE Hostel.hno=Warden.hno AND type='girls';
++-------+--------+
+| Hname | wname  |
++-------+--------+
+| opal  | kala   |
+| opal  | sheela |
++-------+--------+
+
+
+11. SELECT hname,wname FROM Student,Hostel,Warden WHERE Student.hno=Hostel.hno AND Student.hno=Warden.hno AND year=3;
++-------+--------+
+| hname | wname  |
++-------+--------+
+| opal  | kala   |
+| agate | mala   |
+| coral | leela  |
+| opal  | sheela |
++-------+--------+
+
+or 
+
+select hname, wname from Hostel, Warden where Hostel.hno=Warden.hno and Warden.hno in (select hno from Student where year=3);
++-------+--------+
+| hname | wname  |
++-------+--------+
+| opal  | kala   |
+| opal  | sheela |
+| agate | mala   |
+| coral | leela  |
++-------+--------+
+
+12. SELECT wname,COUNT(sid) FROM Warden, Student where Warden.hno=Student.hno GROUP BY wname ;
++--------+------------+
+| wname  | COUNT(sid) |
++--------+------------+
+| kala   |          3 |
+| leela  |          3 |
+| mala   |          3 |
+| sheela |          3 |
++--------+------------+
+
+13. CREATE VIEW view1 AS SELECT sname,gender,Student.hno,hname FROM Student,Hostel WHERE Hostel.hno=Student.hno; 
+SELECT * FROM view1;
++---------+--------+------+-------+
+| sname   | gender | hno  | hname |
++---------+--------+------+-------+
+| vidhya  | female |    1 | opal  |
+| kaviya  | female |    1 | opal  |
+| devi    | female |    1 | opal  |
+| naveen  | male   |    2 | agate |
+| amruth  | male   |    2 | agate |
+| venu    | male   |    2 | agate |
+| moorthy | male   |    3 | coral |
+| bala    | male   |    3 | coral |
+| ramana  | male   |    3 | coral |
++---------+--------+------+-------+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------
+                                                                          Question number 2
+
+
+5. SELECT COUNT(DISTINCT(designation)),COUNT(DISTINCT(deptid)) FROM Staff;
++------------------------------+-------------------------+
+| COUNT(DISTINCT(designation)) | COUNT(DISTINCT(deptid)) |
++------------------------------+-------------------------+
+|                            1 |                       2 |
++------------------------------+-------------------------+
+
+the followig is wrong
+select count(designation) from Staff group by designation;
++--------------------+
+| count(designation) |
++--------------------+
+|                  2 |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select designation,count(staffid) from Staff group by designation;
++-------------+----------------+
+| designation | count(staffid) |
++-------------+----------------+
+| Professor   |              2 |
++-------------+----------------+
+
+7. SELECT Student.deptid,deptname,Staff.staffid,Staff.name FROM Student,Staff,Tutor,Department WHERE Tutor.rollno=Student.rollno AND Tutor.staffid=Staff.staffid AND Student.deptid=Department.deptid AND Tutor.rollno=3; 
++--------+----------+---------+------+
+| deptid | deptname | staffid | name |
++--------+----------+---------+------+
+|      2 | ece      |      10 | mala |
++--------+----------+---------+------+
+
+
+8. SELECT deptid,gender,COUNT(gender) FROM Student WHERE gender='male' GROUP BY deptid UNION SELECT deptid,gender,COUNT(gender) FROM Student WHERE gender='female' GROUP BY deptid;
++--------+--------+---------------+
+| deptid | gender | COUNT(gender) |
++--------+--------+---------------+
+|      1 | male   |             1 |
+|      2 | male   |             2 |
+|      1 | female |             1 |
++--------+--------+---------------+
+
+9. select name from Student, (select deptid, max(total) as maximum from Student group by deptid) as table4 where table4.deptid=Student.deptid and table4.maximum=Student.total;
++--------+
+| name   |
++--------+
+| naveen |
+| amruth |
++--------+
+
+
+10. select Staff.staffid, name, designation, qualification, deptid from Staff,Tutor where Staff.staffid=Tutor.staffid and Tutor.rollno in (select rollno from Student, (select deptid, max(total) as maximum from Student group by deptid) as table4 where table4.deptid=Student.deptid and table4.maximum=Student.total);
++---------+-------+-------------+---------------+--------+
+| staffid | name  | designation | qualification | deptid |
++---------+-------+-------------+---------------+--------+
+|      10 | mala  | Professor   | Phd           |      1 |
+|      11 | leela | Professor   | Phd           |      2 |
++---------+-------+-------------+---------------+--------+
+
+
+12. CREATE VIEW view1 AS SELECT staffid,name,qualification,deptname FROM Staff,Department WHERE Staff.deptid=Department.deptid AND designation='professor'; 
+Query OK, 0 rows affected (0.07 sec)
+
+SELECT * FROM view1;
++---------+-------+---------------+----------+
+| staffid | name  | qualification | deptname |
++---------+-------+---------------+----------+
+|      10 | mala  | Phd           | cse      |
+|      11 | leela | Phd           | ece      |
++---------+-------+---------------+----------+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                   function and procedures
+ 
+functions returns value but procedure does not
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                                                         triggers
+
+show triggers;
+drop trigger t1;
+
+delete * from students where Rollno=5;
+is wrong
+delete from students where Rollno=5; is correct
+
+
+curdate() used to find current date
+ 
+can't insert or update same table or views of it
+
+set n = (select count(*) from student); can be used inside trigger - but cant select and display so should have separate table for displaying messages
+select and parameters can be used in procedure and function
+return can only be done in functions
+
+while updating the old and new value denotes the values of the selected row before and after updating
+while inserting there is no old values. new denotes the new row to be inserted. we can't change the new row after inserting. so the trigger should be "before insert on"
